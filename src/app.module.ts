@@ -1,17 +1,20 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { PersonsModule } from './persons/persons.module';
+import { ConfigModule } from '@nestjs/config';
+
+import { PersonsModule } from '@modules/person/persons.module';
+import { BirthModule } from '@modules/civil/birth/birth.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://mongo:mongo@cluster0.pl5tm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-    ),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGO_URI, {
+      dbName: process.env.MONGO_DB_NAME,
+    }),
     PersonsModule,
+    BirthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
